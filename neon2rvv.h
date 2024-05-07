@@ -3666,7 +3666,7 @@ FORCE_INLINE float64x1_t vmax_f64(float64x1_t a, float64x1_t b) { return __riscv
 FORCE_INLINE float64x2_t vmaxq_f64(float64x2_t a, float64x2_t b) {
   vbool64_t a_mask = __riscv_vmfeq_vv_f64m1_b64(a, a, 2);
   vbool64_t b_mask = __riscv_vmfeq_vv_f64m1_b64(b, b, 2);
-  float64x4_t max_res = __riscv_vfmax_vv_f64m1(a, b, 2);
+  float64x2_t max_res = __riscv_vfmax_vv_f64m1(a, b, 2);
   max_res = __riscv_vmerge_vvm_f64m1(max_res, b, a_mask, 2);
   return __riscv_vmerge_vvm_f64m1(max_res, a, b_mask, 2);
 }
