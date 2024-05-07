@@ -1460,7 +1460,9 @@ FORCE_INLINE float32x4_t vrndnq_f32(float32x4_t a) {
 
 // FORCE_INLINE float64x1_t vrndn_f64(float64x1_t a);
 
-// FORCE_INLINE float64x2_t vrndnq_f64(float64x2_t a);
+FORCE_INLINE float64x2_t vrndnq_f64(float64x2_t a) {
+  return __riscv_vfcvt_f_x_v_f64m1(__riscv_vfcvt_x_f_v_i64m1_rm(a, __RISCV_FRM_RNE, 2), 2);
+}
 
 // FORCE_INLINE float32_t vrndns_f32(float32_t a);
 
@@ -1494,8 +1496,8 @@ FORCE_INLINE float32x4_t vrndpq_f32(float32x4_t a) {
 
 // FORCE_INLINE float64x1_t vrndp_f64(float64x1_t a);
 
-// FORCE_INLINE float64x2_t vrndpq_f64(float64x2_t a) {
-return __riscv_vfcvt_f_x_v_f64m1(__riscv_vfcvt_x_f_v_i64m1_rm(a, __RISCV_FRM_RUP, 2), 2);
+FORCE_INLINE float64x2_t vrndpq_f64(float64x2_t a) {
+  return __riscv_vfcvt_f_x_v_f64m1(__riscv_vfcvt_x_f_v_i64m1_rm(a, __RISCV_FRM_RUP, 2), 2);
 }
 
 FORCE_INLINE float32x2_t vrndm_f32(float32x2_t a) {
@@ -11704,33 +11706,33 @@ FORCE_INLINE uint64x2_t vld1q_dup_u64(const uint64_t *a) { return vdupq_n_u64(a[
 
 // FORCE_INLINE float16x8_t vld1q_dup_f16(float16_t const * ptr);
 
-FORCE_INLINE void vst1_s8(int8_t *a, int8x8_t b) { return __riscv_vse8_v_i8m1(a, b, 8); }
+FORCE_INLINE void vst1_s8(int8_t *a, int8x8_t b) { __riscv_vse8_v_i8m1(a, b, 8); }
 
-FORCE_INLINE void vst1_s16(int16_t *a, int16x4_t b) { return __riscv_vse16_v_i16m1(a, b, 4); }
+FORCE_INLINE void vst1_s16(int16_t *a, int16x4_t b) { __riscv_vse16_v_i16m1(a, b, 4); }
 
-FORCE_INLINE void vst1_s32(int32_t *a, int32x2_t b) { return __riscv_vse32_v_i32m1(a, b, 2); }
+FORCE_INLINE void vst1_s32(int32_t *a, int32x2_t b) { __riscv_vse32_v_i32m1(a, b, 2); }
 
-FORCE_INLINE void vst1_s64(int64_t *a, int64x1_t b) { return __riscv_vse64_v_i64m1(a, b, 1); }
+FORCE_INLINE void vst1_s64(int64_t *a, int64x1_t b) { __riscv_vse64_v_i64m1(a, b, 1); }
 
-FORCE_INLINE void vst1_f32(float32_t *a, float32x2_t b) { return __riscv_vse32_v_f32m1(a, b, 2); }
+FORCE_INLINE void vst1_f32(float32_t *a, float32x2_t b) { __riscv_vse32_v_f32m1(a, b, 2); }
 
-FORCE_INLINE void vst1_u8(uint8_t *a, uint8x8_t b) { return __riscv_vse8_v_u8m1(a, b, 16); }
+FORCE_INLINE void vst1_u8(uint8_t *a, uint8x8_t b) { __riscv_vse8_v_u8m1(a, b, 16); }
 
-FORCE_INLINE void vst1_u16(uint16_t *a, uint16x4_t b) { return __riscv_vse16_v_u16m1(a, b, 4); }
+FORCE_INLINE void vst1_u16(uint16_t *a, uint16x4_t b) { __riscv_vse16_v_u16m1(a, b, 4); }
 
-FORCE_INLINE void vst1_u32(uint32_t *a, uint32x2_t b) { return __riscv_vse32_v_u32m1(a, b, 2); }
+FORCE_INLINE void vst1_u32(uint32_t *a, uint32x2_t b) { __riscv_vse32_v_u32m1(a, b, 2); }
 
-FORCE_INLINE void vst1_u64(uint64_t *a, uint64x1_t b) { return __riscv_vse64_v_u64m1(a, b, 1); }
+FORCE_INLINE void vst1_u64(uint64_t *a, uint64x1_t b) { __riscv_vse64_v_u64m1(a, b, 1); }
 
-FORCE_INLINE void vst1q_s8(int8_t *a, int8x16_t b) { return __riscv_vse8_v_i8m1(a, b, 16); }
+FORCE_INLINE void vst1q_s8(int8_t *a, int8x16_t b) { __riscv_vse8_v_i8m1(a, b, 16); }
 
-FORCE_INLINE void vst1q_s16(int16_t *a, int16x8_t b) { return __riscv_vse16_v_i16m1(a, b, 8); }
+FORCE_INLINE void vst1q_s16(int16_t *a, int16x8_t b) { __riscv_vse16_v_i16m1(a, b, 8); }
 
-FORCE_INLINE void vst1q_s32(int32_t *a, int32x4_t b) { return __riscv_vse32_v_i32m1(a, b, 4); }
+FORCE_INLINE void vst1q_s32(int32_t *a, int32x4_t b) { __riscv_vse32_v_i32m1(a, b, 4); }
 
-FORCE_INLINE void vst1q_s64(int64_t *a, int64x2_t b) { return __riscv_vse64_v_i64m1(a, b, 2); }
+FORCE_INLINE void vst1q_s64(int64_t *a, int64x2_t b) { __riscv_vse64_v_i64m1(a, b, 2); }
 
-FORCE_INLINE void vst1q_f32(float32_t *a, float32x4_t b) { return __riscv_vse32_v_f32m1(a, b, 4); }
+FORCE_INLINE void vst1q_f32(float32_t *a, float32x4_t b) { __riscv_vse32_v_f32m1(a, b, 4); }
 
 // FORCE_INLINE void vst1_p8(poly8_t * ptr, poly8x8_t val);
 
@@ -11740,17 +11742,17 @@ FORCE_INLINE void vst1q_f32(float32_t *a, float32x4_t b) { return __riscv_vse32_
 
 // FORCE_INLINE void vst1q_p16(poly16_t * ptr, poly16x8_t val);
 
-FORCE_INLINE void vst1_f64(float64_t *ptr, float64x1_t val) { return __riscv_vse64_v_f64m1(a, b, 1); }
+FORCE_INLINE void vst1_f64(float64_t *a, float64x1_t b) { __riscv_vse64_v_f64m1(a, b, 1); }
 
-FORCE_INLINE void vst1q_f64(float64_t *ptr, float64x2_t val) { return __riscv_vse64_v_f64m1(a, b, 2); }
+FORCE_INLINE void vst1q_f64(float64_t *a, float64x2_t b) { __riscv_vse64_v_f64m1(a, b, 2); }
 
-FORCE_INLINE void vst1q_u8(uint8_t *a, uint8x16_t b) { return __riscv_vse8_v_u8m1(a, b, 16); }
+FORCE_INLINE void vst1q_u8(uint8_t *a, uint8x16_t b) { __riscv_vse8_v_u8m1(a, b, 16); }
 
-FORCE_INLINE void vst1q_u16(uint16_t *a, uint16x8_t b) { return __riscv_vse16_v_u16m1(a, b, 8); }
+FORCE_INLINE void vst1q_u16(uint16_t *a, uint16x8_t b) { __riscv_vse16_v_u16m1(a, b, 8); }
 
-FORCE_INLINE void vst1q_u32(uint32_t *a, uint32x4_t b) { return __riscv_vse32_v_u32m1(a, b, 4); }
+FORCE_INLINE void vst1q_u32(uint32_t *a, uint32x4_t b) { __riscv_vse32_v_u32m1(a, b, 4); }
 
-FORCE_INLINE void vst1q_u64(uint64_t *a, uint64x2_t b) { return __riscv_vse64_v_u64m1(a, b, 2); }
+FORCE_INLINE void vst1q_u64(uint64_t *a, uint64x2_t b) { __riscv_vse64_v_u64m1(a, b, 2); }
 
 // FORCE_INLINE void vst1_p64(poly64_t * ptr, poly64x1_t val);
 
