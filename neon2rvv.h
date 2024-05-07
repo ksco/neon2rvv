@@ -698,7 +698,7 @@ FORCE_INLINE float32x4_t vmulq_f32(float32x4_t a, float32x4_t b) { return __risc
 
 // FORCE_INLINE float64x1_t vmul_f64(float64x1_t a, float64x1_t b);
 
-// FORCE_INLINE float64x2_t vmulq_f64(float64x2_t a, float64x2_t b);
+FORCE_INLINE float64x2_t vmulq_f64(float64x2_t a, float64x2_t b) { return __riscv_vfmul_vv_f64m1(a, b, 2); };
 
 // FORCE_INLINE float32x2_t vmulx_f32(float32x2_t a, float32x2_t b);
 
@@ -10840,7 +10840,12 @@ FORCE_INLINE float32x4_t vbslq_f32(uint32x4_t a, float32x4_t b, float32x4_t c) {
 
 // FORCE_INLINE float64x1_t vbsl_f64(uint64x1_t a, float64x1_t b, float64x1_t c);
 
-// FORCE_INLINE float64x2_t vbslq_f64(uint64x2_t a, float64x2_t b, float64x2_t c);
+FORCE_INLINE float64x2_t vbslq_f64(uint64x2_t a, float64x2_t b, float64x2_t c) {
+  vuint64m1_t b_u64 = __riscv_vreinterpret_v_f64m1_u64m1(b);
+  vuint64m1_t c_u64 = __riscv_vreinterpret_v_f64m1_u64m1(c);
+  return __riscv_vreinterpret_v_u64m1_f64m1(
+      __riscv_vxor_vv_u64m1(__riscv_vand_vv_u64m1(__riscv_vxor_vv_u64m1(c_u64, b_u64, 2), a, 2), c_u64, 2));
+}
 
 // FORCE_INLINE int8x8_t vcopy_lane_s8(int8x8_t a, const int lane1, int8x8_t b, const int lane2);
 
