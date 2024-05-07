@@ -164,6 +164,7 @@ FORCE_INLINE int8x8_t vdup_n_s8(int8_t a);
 FORCE_INLINE int16x4_t vdup_n_s16(int16_t a);
 FORCE_INLINE int32x2_t vdup_n_s32(int32_t a);
 FORCE_INLINE float32x2_t vdup_n_f32(float32_t a);
+FORCE_INLINE float64x2_t vdupq_n_f64(float64_t a);
 FORCE_INLINE uint8x8_t vdup_n_u8(uint8_t a);
 FORCE_INLINE uint16x4_t vdup_n_u16(uint16_t a);
 FORCE_INLINE uint32x2_t vdup_n_u32(uint32_t a);
