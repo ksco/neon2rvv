@@ -14636,7 +14636,7 @@ FORCE_INLINE uint64x2_t vreinterpretq_u64_s64(int64x2_t a) { return __riscv_vrei
 
 // FORCE_INLINE poly16x8_t vreinterpretq_p16_f64(float64x2_t a);
 
-// FORCE_INLINE uint64x2_t vreinterpretq_u64_f64(float64x2_t a);
+FORCE_INLINE uint64x2_t vreinterpretq_u64_f64(float64x2_t a) { return __riscv_vreinterpret_v_f64m1_u64m1(a); }
 
 // FORCE_INLINE int64x2_t vreinterpretq_s64_f64(float64x2_t a);
 
