@@ -4538,15 +4538,23 @@ FORCE_INLINE float64_t vminvq_f64(float64x2_t a) {
 
 // FORCE_INLINE float32_t vmaxnmv_f32(float32x2_t a);
 
-// FORCE_INLINE float32_t vmaxnmvq_f32(float32x4_t a);
+FORCE_INLINE float32_t vmaxnmvq_f32(float32_t a, float32x4_t b) {
+  return __riscv_vfmv_f_s_f32m1_f32(__riscv_vfredmax_vs_f32m1_f32m1(b, __riscv_vfmv_v_f_f32m1(a, 4), 4));
+}
 
-// FORCE_INLINE float64_t vmaxnmvq_f64(float64x2_t a);
+FORCE_INLINE float64_t vmaxnmvq_f64(float64_t a, float64x2_t b) {
+  return __riscv_vfmv_f_s_f64m1_f64(__riscv_vfredmax_vs_f64m1_f64m1(b, __riscv_vfmv_v_f_f64m1(a, 2), 2));
+}
 
 // FORCE_INLINE float32_t vminnmv_f32(float32x2_t a);
 
-// FORCE_INLINE float32_t vminnmvq_f32(float32x4_t a);
+FORCE_INLINE float32_t vminnmvq_f32(float32_t a, float32x4_t b) {
+  return __riscv_vfmv_f_s_f32m1_f32(__riscv_vfredmin_vs_f32m1_f32m1(b, __riscv_vfmv_v_f_f32m1(a, 4), 4));
+}
 
-// FORCE_INLINE float64_t vminnmvq_f64(float64x2_t a);
+// FORCE_INLINE float64_t vminnmvq_f64(float64_t a, float64x2_t b) {
+return __riscv_vfmv_f_s_f64m1_f64(__riscv_vfredmin_vs_f64m1_f64m1(b, __riscv_vfmv_v_f_f64m1(a, 2), 2));
+}
 
 FORCE_INLINE uint8x8_t vpmin_u8(uint8x8_t a, uint8x8_t b) {
   vbool8_t mask = __riscv_vreinterpret_v_u8m1_b8(vdup_n_u8(85));
