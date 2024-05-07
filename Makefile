@@ -13,7 +13,14 @@ else
 endif
 
 ifndef CROSS_COMPILE
-    processor := $(shell uname -m)
+    uname_result := $(shell uname -m)
+	ifeq ($(uname_result),riscv64)
+		processor = rv64
+	else ifeq ($(uname_result),riscv32)
+		processor = rv32
+	else
+		processor = $(uname_result)
+	endif
 else # CROSS_COMPILE was set
     CC = $(CROSS_COMPILE)gcc
     CXX = $(CROSS_COMPILE)g++
@@ -34,8 +41,6 @@ else # CROSS_COMPILE was set
 		$(error Unsupported cross-compiler)
 	endif
 
-	ARCH_CFLAGS = -march=$(processor)gcv_zba
-
 	ifeq ($(SIMULATOR_TYPE), qemu)
 		SIMULATOR += qemu-riscv64
 		SIMULATOR_FLAGS = -cpu $(processor),v=true,zba=true,vlen=128
@@ -44,6 +49,10 @@ else # CROSS_COMPILE was set
 		SIMULATOR_FLAGS = --isa=$(processor)gcv_zba
 		PROXY_KERNEL = pk
 	endif
+endif
+
+ifeq ($(processor),$(filter $(processor),rv32 rv64))
+	ARCH_CFLAGS = -march=$(processor)gcv_zba
 endif
 
 CXXFLAGS += -Wall -Wcast-qual -I. $(ARCH_CFLAGS)
