@@ -3660,7 +3660,7 @@ FORCE_INLINE float32x4_t vmaxnmq_f32(float32x4_t a, float32x4_t b) { return __ri
 
 // FORCE_INLINE float64x1_t vmaxnm_f64(float64x1_t a, float64x1_t b);
 
-// FORCE_INLINE float64x2_t vmaxnmq_f64(float64x2_t a, float64x2_t b);
+FORCE_INLINE float64x2_t vmaxnmq_f64(float64x2_t a, float64x2_t b) { return __riscv_vfmax_vv_f64m1(a, b, 2); }
 
 FORCE_INLINE float32x2_t vminnm_f32(float32x2_t a, float32x2_t b) { return __riscv_vfmin_vv_f32m1(a, b, 2); }
 
@@ -3668,7 +3668,7 @@ FORCE_INLINE float32x4_t vminnmq_f32(float32x4_t a, float32x4_t b) { return __ri
 
 // FORCE_INLINE float64x1_t vminnm_f64(float64x1_t a, float64x1_t b);
 
-// FORCE_INLINE float64x2_t vminnmq_f64(float64x2_t a, float64x2_t b);
+FORCE_INLINE float64x2_t vminnmq_f64(float64x2_t a, float64x2_t b) { return __riscv_vfmin_vv_f64m1(a, b, 2); }
 
 FORCE_INLINE uint8x16_t vmaxq_u8(uint8x16_t a, uint8x16_t b) { return __riscv_vmaxu_vv_u8m1(a, b, 16); }
 
@@ -6552,7 +6552,7 @@ FORCE_INLINE float32x4_t vnegq_f32(float32x4_t a) { return __riscv_vfneg_v_f32m1
 
 // FORCE_INLINE float64x1_t vneg_f64(float64x1_t a);
 
-// FORCE_INLINE float64x2_t vnegq_f64(float64x2_t a) { return __riscv_vfneg_v_f64m1(a, 2); }
+FORCE_INLINE float64x2_t vnegq_f64(float64x2_t a) { return __riscv_vfneg_v_f64m1(a, 2); }
 
 FORCE_INLINE int8x8_t vqneg_s8(int8x8_t a) {
   vint16m2_t a_ext = __riscv_vsext_vf2_i16m2(a, 8);
@@ -14426,7 +14426,7 @@ FORCE_INLINE int64x2_t vreinterpretq_s64_f32(float32x4_t a) {
 
 FORCE_INLINE int64x2_t vreinterpretq_s64_u64(uint64x2_t a) { return __riscv_vreinterpret_v_u64m1_i64m1(a); }
 
-// FORCE_INLINE float64x2_t vreinterpretq_f64_u64(uint64x2_t a);
+FORCE_INLINE float64x2_t vreinterpretq_f64_u64(uint64x2_t a) { return __riscv_vreinterpret_v_u64m1_f64m1(a); }
 
 // FORCE_INLINE float64x2_t vreinterpretq_f64_s64(int64x2_t a);
 
