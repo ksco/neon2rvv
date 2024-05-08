@@ -2579,12 +2579,12 @@ FORCE_INLINE uint64x2_t vcgtq_s64(int64x2_t a, int64x2_t b) {
 }
 
 FORCE_INLINE uint64x1_t vcgt_u64(uint64x1_t a, uint64x1_t b) {
-  vbool64_t cmp_res = __riscv_vmsgeu_vv_u64m1_b64(a, b, 1);
+  vbool64_t cmp_res = __riscv_vmsgtu_vv_u64m1_b64(a, b, 1);
   return __riscv_vmerge_vvm_u64m1(vdupq_n_u64(0x0), vdupq_n_u64(UINT64_MAX), cmp_res, 1);
 }
 
 FORCE_INLINE uint64x2_t vcgtq_u64(uint64x2_t a, uint64x2_t b) {
-  vbool64_t cmp_res = __riscv_vmsgeu_vv_u64m1_b64(a, b, 2);
+  vbool64_t cmp_res = __riscv_vmsgtu_vv_u64m1_b64(a, b, 2);
   return __riscv_vmerge_vvm_u64m1(vdupq_n_u64(0x0), vdupq_n_u64(UINT64_MAX), cmp_res, 2);
 }
 
