@@ -3653,22 +3653,20 @@ FORCE_INLINE int16x8_t vmaxq_s16(int16x8_t a, int16x8_t b) { return __riscv_vmax
 
 FORCE_INLINE int32x4_t vmaxq_s32(int32x4_t a, int32x4_t b) { return __riscv_vmax_vv_i32m1(a, b, 4); }
 
+// NaN propagates when either input is NaN
 FORCE_INLINE float32x4_t vmaxq_f32(float32x4_t a, float32x4_t b) {
-  vbool32_t a_mask = __riscv_vmfeq_vv_f32m1_b32(a, a, 4);
-  vbool32_t b_mask = __riscv_vmfeq_vv_f32m1_b32(b, b, 4);
+  vbool32_t mask = __riscv_vmand_mm_b32(__riscv_vmfeq_vv_f32m1_b32(a, a, 4), __riscv_vmfeq_vv_f32m1_b32(b, b, 4), 4);
   float32x4_t max_res = __riscv_vfmax_vv_f32m1(a, b, 4);
-  max_res = __riscv_vmerge_vvm_f32m1(max_res, b, a_mask, 4);
-  return __riscv_vmerge_vvm_f32m1(max_res, a, b_mask, 4);
+  return __riscv_vmerge_vvm_f32m1(vdupq_n_f32(NAN), max_res, mask, 4);
 }
 
 FORCE_INLINE float64x1_t vmax_f64(float64x1_t a, float64x1_t b) { return __riscv_vfmax_vv_f64m1(a, b, 1); }
 
+// NaN propagates when either input is NaN
 FORCE_INLINE float64x2_t vmaxq_f64(float64x2_t a, float64x2_t b) {
-  vbool64_t a_mask = __riscv_vmfeq_vv_f64m1_b64(a, a, 2);
-  vbool64_t b_mask = __riscv_vmfeq_vv_f64m1_b64(b, b, 2);
+  vbool64_t mask = __riscv_vmand_mm_b64(__riscv_vmfeq_vv_f64m1_b64(a, a, 2), __riscv_vmfeq_vv_f64m1_b64(b, b, 2), 2);
   float64x2_t max_res = __riscv_vfmax_vv_f64m1(a, b, 2);
-  max_res = __riscv_vmerge_vvm_f64m1(max_res, b, a_mask, 2);
-  return __riscv_vmerge_vvm_f64m1(max_res, a, b_mask, 2);
+  return __riscv_vmerge_vvm_f64m1(vdupq_n_f64(NAN), max_res, mask, 2);
 }
 
 FORCE_INLINE float32x2_t vmaxnm_f32(float32x2_t a, float32x2_t b) { return __riscv_vfmax_vv_f32m1(a, b, 2); }
@@ -3713,11 +3711,21 @@ FORCE_INLINE int16x8_t vminq_s16(int16x8_t a, int16x8_t b) { return __riscv_vmin
 
 FORCE_INLINE int32x4_t vminq_s32(int32x4_t a, int32x4_t b) { return __riscv_vmin_vv_i32m1(a, b, 4); }
 
-FORCE_INLINE float32x4_t vminq_f32(float32x4_t a, float32x4_t b) { return __riscv_vfmin_vv_f32m1(a, b, 4); }
+// NaN propagates when either input is NaN
+FORCE_INLINE float32x4_t vminq_f32(float32x4_t a, float32x4_t b) {
+  vbool32_t mask = __riscv_vmand_mm_b32(__riscv_vmfeq_vv_f32m1_b32(a, a, 4), __riscv_vmfeq_vv_f32m1_b32(b, b, 4), 4);
+  float32x4_t min_res = __riscv_vfmin_vv_f32m1(a, b, 4);
+  return __riscv_vmerge_vvm_f32m1(vdupq_n_f32(NAN), min_res, mask, 4);
+}
 
 FORCE_INLINE float64x1_t vmin_f64(float64x1_t a, float64x1_t b) { return __riscv_vfmin_vv_f64m1(a, b, 1); }
 
-FORCE_INLINE float64x2_t vminq_f64(float64x2_t a, float64x2_t b) { return __riscv_vfmin_vv_f64m1(a, b, 2); }
+// NaN propagates when either input is NaN
+FORCE_INLINE float64x2_t vminq_f64(float64x2_t a, float64x2_t b) {
+  vbool64_t mask = __riscv_vmand_mm_b64(__riscv_vmfeq_vv_f64m1_b64(a, a, 2), __riscv_vmfeq_vv_f64m1_b64(b, b, 2), 2);
+  float64x2_t min_res = __riscv_vfmin_vv_f64m1(a, b, 2);
+  return __riscv_vmerge_vvm_f64m1(vdupq_n_f64(NAN), min_res, mask, 2);
+}
 
 FORCE_INLINE uint8x16_t vminq_u8(uint8x16_t a, uint8x16_t b) { return __riscv_vminu_vv_u8m1(a, b, 16); }
 
@@ -4542,10 +4550,18 @@ FORCE_INLINE float32_t vminv_f32(float32x2_t a) {
 }
 
 FORCE_INLINE float32_t vminvq_f32(float32x4_t a) {
+  uint8_t mask = __riscv_vmv_x_s_u8m1_u8(__riscv_vreinterpret_v_b32_u8m1(__riscv_vmfeq_vv_f32m1_b32(a, a, 4)));
+  if ((mask & 0b1111) != 0b1111) {
+    return NAN;
+  }
   return __riscv_vfmv_f_s_f32m1_f32(__riscv_vfredmin_vs_f32m1_f32m1(a, __riscv_vfmv_v_f_f32m1(FLT_MAX, 4), 4));
 }
 
 FORCE_INLINE float64_t vminvq_f64(float64x2_t a) {
+  uint8_t mask = __riscv_vmv_x_s_u8m1_u8(__riscv_vreinterpret_v_b64_u8m1(__riscv_vmfeq_vv_f64m1_b64(a, a, 2)));
+  if ((mask & 0b11) != 0b11) {
+    return NAN;
+  }
   return __riscv_vfmv_f_s_f64m1_f64(__riscv_vfredmin_vs_f64m1_f64m1(a, __riscv_vfmv_v_f_f64m1(DBL_MAX, 2), 2));
 }
 
