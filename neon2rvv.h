@@ -4490,10 +4490,18 @@ FORCE_INLINE float32_t vmaxv_f32(float32x2_t a) {
 }
 
 FORCE_INLINE float32_t vmaxvq_f32(float32x4_t a) {
+  uint8_t mask = __riscv_vmv_x_s_u8m1_u8(__riscv_vreinterpret_v_b32_u8m1(__riscv_vmfeq_vv_f32m1_b32(a, a, 4)));
+  if ((mask & 0b1111) != 0b1111) {
+    return NAN;
+  }
   return __riscv_vfmv_f_s_f32m1_f32(__riscv_vfredmax_vs_f32m1_f32m1(a, __riscv_vfmv_v_f_f32m1(-FLT_MAX, 4), 4));
 }
 
 FORCE_INLINE float64_t vmaxvq_f64(float64x2_t a) {
+  uint8_t mask = __riscv_vmv_x_s_u8m1_u8(__riscv_vreinterpret_v_b64_u8m1(__riscv_vmfeq_vv_f64m1_b64(a, a, 2)));
+  if ((mask & 0b11) != 0b11) {
+    return NAN;
+  }
   return __riscv_vfmv_f_s_f64m1_f64(__riscv_vfredmax_vs_f64m1_f64m1(a, __riscv_vfmv_v_f_f64m1(-DBL_MAX, 2), 2));
 }
 
